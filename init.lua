@@ -22,6 +22,11 @@ vim.cmd 'au BufRead,BufNewFile *.md,*.txt setlocal textwidth=80'
 -- Mapping helpers
 local keymap = vim.api.nvim_set_keymap
 local mapdefaults = { noremap = true }
+keymap('i', '<C-c>', '<ESC>', mapdefaults)
+
+-- Index used to fix revive weird disable on error.
+ReviveIndex = 0
+
 
 -- File Reference function, very useful
 File_reference = function()
@@ -82,27 +87,12 @@ local plugins = {
   {
     "williamboman/mason.nvim",
     build = ':MasonUpdate',
-    dependencies = {
-      'jose-elias-alvarez/null-ls.nvim',
-      'mfussenegger/nvim-dap',
-      'jay-babu/mason-null-ls.nvim',
-      'jayp0521/mason-nvim-dap.nvim'
-    },
     config = function()
       require('mason').setup {
         ui = {
           border = 'rounded'
         }
       }
-
-      vim.api.nvim_create_autocmd({ 'User' }, {
-        pattern = 'ConfigLocalFinished',
-        callback = function()
-          require('mason-null-ls').setup { automatic_installation = true }
-          require('mason-nvim-dap').setup { automatic_installation = true }
-          return true
-        end
-      })
     end
   },
 
@@ -205,7 +195,6 @@ local plugins = {
               }
             }
           }))
-          require('lspconfig').pyright.setup(with_cmpcaps({}))
           ---- Go
           local gotags_flag = '-tags=' .. vim.g.gotags
           require('lspconfig').gopls.setup(with_cmpcaps({
@@ -221,6 +210,17 @@ local plugins = {
               }
             }
           }))
+          -- JS / TS
+          vim.g.markdown_fenced_languages = {
+            "ts=typescript"
+          }
+          require('lspconfig').denols.setup(with_cmpcaps({}))
+
+          -- Reloading the buffer to attach the client
+          -- Yeah, kinda hacky but I really wanna use specific configs.
+          if (vim.fn.expand('%') ~= '') then
+            vim.cmd ':edit'
+          end
 
           return true
         end
@@ -318,6 +318,10 @@ local plugins = {
 
   {
     "mfussenegger/nvim-dap",
+    dependencies = {
+      'williamboman/mason.nvim',
+      'jayp0521/mason-nvim-dap.nvim'
+    },
     config = function()
       local dapkey = function(combo)
         return vim.g.dapleader .. combo
@@ -379,6 +383,8 @@ local plugins = {
               initialize_timeout_sec = 20,
             },
           }
+
+          require("mason-nvim-dap").setup()
           return true
         end
       })
@@ -418,16 +424,46 @@ local plugins = {
   -- Linting
   {
     "jose-elias-alvarez/null-ls.nvim",
+    dependencies = {
+      'williamboman/mason.nvim',
+      'jay-babu/mason-null-ls.nvim'
+    },
     config = function()
       local null_ls = require('null-ls')
-      require('null-ls').setup {
-        sources = {
-          null_ls.builtins.diagnostics.revive,
-          null_ls.builtins.formatting.goimports,
-          null_ls.builtins.formatting.gofumpt,
-          null_ls.builtins.formatting.autoflake
-        }
-      }
+
+      vim.api.nvim_create_autocmd({ 'User' }, {
+        pattern = 'ConfigLocalFinished',
+        callback = function()
+          require('null-ls').setup {
+            sources = {
+              null_ls.builtins.diagnostics.revive,
+              null_ls.builtins.formatting.goimports,
+              null_ls.builtins.formatting.gofumpt,
+            }
+          }
+
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = { "*.go" },
+            callback = function()
+              local srcs = require('null-ls.sources').get_all()
+
+              if (ReviveIndex ~= 0) then
+                srcs[ReviveIndex].generator._failed = false
+                return
+              end
+
+              for i, source in pairs(srcs) do
+                if (source.name == "revive") then
+                  ReviveIndex = i
+                  source.generator._failed = false
+                  return
+                end
+              end
+            end
+          })
+          require('mason-null-ls').setup { automatic_installation = true }
+        end
+      })
     end
   },
 
