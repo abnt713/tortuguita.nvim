@@ -21,7 +21,7 @@ vim.cmd 'au BufRead,BufNewFile *.md,*.txt setlocal textwidth=80'
 
 -- Mapping helpers
 local keymap = vim.api.nvim_set_keymap
-local mapdefaults = { noremap = true, silent = true }
+local mapdefaults = { noremap = true }
 
 -- File Reference function, very useful
 File_reference = function()
@@ -66,23 +66,16 @@ local plugins = {
   },
 
   -- Statusline
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   config = function()
-  --     require('lualine').setup({
-  --       theme = 'ayu_dark'
-  --     })
-  --   end,
-  --   dependencies = {
-  --     'nvim-tree/nvim-web-devicons'
-  --   },
-  -- },
-  
   {
-    'windwp/windline.nvim',
+    "nvim-lualine/lualine.nvim",
     config = function()
-      require('wlsample.bubble')
-    end
+      require('lualine').setup({
+        theme = 'ayu_dark'
+      })
+    end,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    },
   },
 
   -- Mason
@@ -233,7 +226,6 @@ local plugins = {
         end
       })
 
-
       -- Autoformat on save
       vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = '',
@@ -252,6 +244,19 @@ local plugins = {
       keymap('n', 'gl', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>', mapdefaults)
       keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', mapdefaults)
       keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', mapdefaults)
+    end
+  },
+
+  -- CPP Toggle
+  {
+    'jakemason/ouroboros.nvim',
+    config = function()
+      vim.api.nvim_create_autocmd({ 'Filetype' }, {
+        pattern = { 'c', 'cpp' },
+        callback = function()
+          vim.api.nvim_buf_set_keymap(0, 'n', 'gt', '<cmd>:Ouroboros<CR>', mapdefaults)
+        end
+      })
     end
   },
 
