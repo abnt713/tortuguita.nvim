@@ -106,7 +106,10 @@ local plugins = {
     config = function()
       require('telescope').setup {
         extensions = {
-          file_browser = {}
+          file_browser = {
+            path = "%:p:h",
+            cwd_to_path = true
+          }
         }
       }
 
@@ -491,6 +494,20 @@ local plugins = {
       keymap('n', '<Leader>cc', '<cmd>ColorToggle<CR>', mapdefaults)
     end
   },
+  {
+    "edolphin-ydf/goimpl.nvim",
+    ft = "go",
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-lua/popup.nvim',
+      'nvim-telescope/telescope.nvim',
+      'nvim-treesitter/nvim-treesitter'
+    },
+    config = function()
+      require('telescope').load_extension('goimpl')
+      keymap('n', '<Leader>gi', '<cmd>lua require("telescope").extensions.goimpl.goimpl({})<CR>', mapdefaults)
+    end
+  }
 }
 
 require("lazy").setup(plugins, { ui = { border = 'rounded' } })
