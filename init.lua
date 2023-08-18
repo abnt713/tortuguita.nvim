@@ -116,9 +116,16 @@ local plugins = {
       require('telescope').load_extension 'file_browser'
 
       keymap('n', '<Leader>ff', "<cmd>Telescope find_files<CR>", mapdefaults)
-      keymap('n', '<Leader>ft', "<cmd>Telescope file_browser<CR>", mapdefaults)
       keymap('n', '<Leader>fg', "<cmd>Telescope live_grep<CR>", mapdefaults)
       keymap('n', '<Leader>fb', "<cmd>Telescope buffers<CR>", mapdefaults)
+    end
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    config = function()
+      require("nvim-tree").setup()
+
+      keymap('n', '<Leader>ft', "<cmd>NvimTreeToggle<CR>", mapdefaults)
     end
   },
 
@@ -434,6 +441,8 @@ local plugins = {
     config = function()
       local null_ls = require('null-ls')
 
+      keymap('n', 'gq', "<cmd>lua require('null-ls').toggle({name = 'revive'})<CR>", mapdefaults)
+
       vim.api.nvim_create_autocmd({ 'User' }, {
         pattern = 'ConfigLocalFinished',
         callback = function()
@@ -507,7 +516,7 @@ local plugins = {
       require('telescope').load_extension('goimpl')
       keymap('n', '<Leader>gi', '<cmd>lua require("telescope").extensions.goimpl.goimpl({})<CR>', mapdefaults)
     end
-  }
+  },
 }
 
 require("lazy").setup(plugins, { ui = { border = 'rounded' } })
