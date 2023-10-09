@@ -118,7 +118,12 @@ local plugins = {
       keymap('n', '<Leader>ff', "<cmd>Telescope find_files<CR>", mapdefaults)
       keymap('n', '<Leader>fg', "<cmd>Telescope live_grep<CR>", mapdefaults)
       keymap('n', '<Leader>fb', "<cmd>Telescope buffers<CR>", mapdefaults)
+      keymap('n', '<Leader>fe', "<cmd>Telescope file_browser<CR>", mapdefaults)
     end
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -137,7 +142,6 @@ local plugins = {
       require('nvim-treesitter.configs').setup {
         ensure_installed = {
           'go',
-          'php',
           'markdown',
           'python',
           'lua',
@@ -193,8 +197,6 @@ local plugins = {
           -- List of servers
           ---- CPP
           require('lspconfig').ccls.setup(with_cmpcaps({}))
-          ---- PHP
-          require('lspconfig').intelephense.setup(with_cmpcaps({}))
           ---- Lua
           require('lspconfig').lua_ls.setup(with_cmpcaps({
             settings = {
@@ -413,20 +415,24 @@ local plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
-      require('indent_blankline').setup {
-        char = '¦',
-        buftype_exclude = {
-          'terminal',
-          'checkhealth',
-          'help',
-          'lspinfo',
-          'packer',
-          'startup',
+      require('ibl').setup {
+        indent = {
+          char = '¦',
         },
-        filetype_exclude = {
-          'lazy',
-          'mason',
-        }
+        exclude = {
+          buftypes = {
+            'terminal',
+            'checkhealth',
+            'help',
+            'lspinfo',
+            'packer',
+            'startup',
+          },
+          filetypes = {
+            'lazy',
+            'mason',
+          }
+        },
       }
     end,
   },
