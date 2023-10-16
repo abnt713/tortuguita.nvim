@@ -419,6 +419,9 @@ local plugins = {
         indent = {
           char = '¦',
         },
+        scope = {
+          enabled = false,
+        },
         exclude = {
           buftypes = {
             'terminal',
@@ -522,6 +525,11 @@ local plugins = {
       require('telescope').load_extension('goimpl')
       keymap('n', '<Leader>gi', '<cmd>lua require("telescope").extensions.goimpl.goimpl({})<CR>', mapdefaults)
     end
+  },
+  {
+    "m4xshen/hardtime.nvim",
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    opts = {}
   },
 }
 
