@@ -27,7 +27,6 @@ keymap('i', '<C-c>', '<ESC>', mapdefaults)
 -- Index used to fix revive weird disable on error.
 ReviveIndex = 0
 
-
 -- File Reference function, very useful
 File_reference = function()
   local fileref = vim.fn.expand('%') .. ':' .. vim.fn.line('.')
@@ -530,6 +529,19 @@ local plugins = {
     "m4xshen/hardtime.nvim",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts = {}
+  },
+  {
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
+    config = function()
+      require("peek").setup({
+        app = { 'wfirefox', '--new-window' }
+      })
+      -- refer to `configuration to change defaults`
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
   },
 }
 
