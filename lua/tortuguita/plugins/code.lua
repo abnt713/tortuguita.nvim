@@ -46,7 +46,8 @@ function code.autocomplete()
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-vsnip",
       "hrsh7th/cmp-nvim-lsp-signature-help",
-      "hrsh7th/vim-vsnip"
+      "hrsh7th/vim-vsnip",
+      "onsails/lspkind.nvim",
     },
     config = function()
       vim.o.completeopt = 'menu,menuone,noselect'
@@ -57,9 +58,20 @@ function code.autocomplete()
             vim.fn["vsnip#anonymous"](args.body)
           end
         },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered()
+        formatting = {
+          format = function(entry, vim_item)
+            if vim.tbl_contains({ 'path' }, entry.source.name) then
+              local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+              if icon then
+                vim_item.kind = icon
+                vim_item.kind_hl_group = hl_group
+                return vim_item
+              end
+            end
+            return require('lspkind').cmp_format({
+              with_text = false,
+            })(entry, vim_item)
+          end
         },
         mapping = {
           ['<CR>'] = cmp.mapping.confirm { select = true },
