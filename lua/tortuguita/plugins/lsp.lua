@@ -98,4 +98,18 @@ function lsp.engine(cfg)
   }
 end
 
+function lsp.trouble(cfg)
+  return {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local keymap = vim.api.nvim_set_keymap
+      local mapdefaults = { noremap = true }
+
+      keymap('n', cfg.map.trouble_project, '<cmd>TroubleToggle workspace_diagnostics<CR>', mapdefaults)
+      keymap('n', cfg.map.trouble_document, '<cmd>TroubleToggle document_diagnostics<CR>', mapdefaults)
+    end
+  }
+end
+
 return lsp

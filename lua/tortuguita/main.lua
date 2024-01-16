@@ -37,6 +37,7 @@ function main.main(cfg)
     require('tortuguita.plugins.code').linter(cfg.linter),
 
     require('tortuguita.plugins.lsp').engine(cfg.lsp),
+    require('tortuguita.plugins.lsp').trouble(cfg.lsp),
     require('tortuguita.plugins.debug').dap(cfg.debug),
 
     require('tortuguita.plugins.tools').git(cfg.git),

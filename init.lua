@@ -33,6 +33,8 @@ require('tortuguita.main').main({
       show_symbol_diagnostic = 'gl',
       next_diagnostic = 'gn',
       prev_diagnostic = 'gp',
+      trouble_project = 'gt',
+      trouble_document = 'gT',
     }
   },
   debug = {
