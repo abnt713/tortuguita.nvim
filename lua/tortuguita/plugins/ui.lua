@@ -25,20 +25,6 @@ function ui.statusline()
   }
 end
 
-function ui.file_tree(cfg)
-  return {
-    "nvim-tree/nvim-tree.lua",
-    config = function()
-      require("nvim-tree").setup()
-
-      local keymap = vim.api.nvim_set_keymap
-      local mapdefaults = { noremap = true }
-
-      keymap('n', cfg.map.toggle, "<cmd>NvimTreeToggle<CR>", mapdefaults)
-    end
-  }
-end
-
 function ui.indent_guides()
   return {
     "lukas-reineke/indent-blankline.nvim",

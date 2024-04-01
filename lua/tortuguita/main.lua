@@ -20,15 +20,16 @@ function main.main(cfg)
     require('tortuguita.plugins.ui').statusline(),
     require('tortuguita.plugins.ui').indent_guides(),
     require('tortuguita.plugins.ui').gitgutter(cfg.editor),
-    require('tortuguita.plugins.ui').file_tree(cfg.file_tree),
 
+    -- Editor plugins
     require('tortuguita.plugins.editor').commentary(),
     require('tortuguita.plugins.editor').hardmode(),
     require('tortuguita.plugins.editor').project_config(),
     require('tortuguita.plugins.editor').assets_manager(cfg.border_style),
-    require('tortuguita.plugins.fuzzy').file_explorer(cfg.fuzzy),
     require('tortuguita.plugins.fuzzy').base(cfg.fuzzy),
+    require('tortuguita.plugins.fuzzy').file_explorer(cfg.fuzzy),
 
+    -- Language plugins
     require('tortuguita.plugins.lang').cpp_toggle(cfg.lang.cpp),
     require('tortuguita.plugins.lang').go_impl(cfg.lang.go),
 

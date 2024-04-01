@@ -10,10 +10,7 @@ function fuzzy.base(cfg)
     config = function()
       require('telescope').setup {
         extensions = {
-          file_browser = {
-            path = "%:p:h",
-            cwd_to_path = true
-          }
+          file_browser = {}
         }
       }
 
@@ -38,7 +35,7 @@ function fuzzy.file_explorer(cfg)
       require('telescope').load_extension 'file_browser'
       local keymap = vim.api.nvim_set_keymap
       local mapdefaults = { noremap = true }
-      keymap('n', cfg.map['file_browser'], "<cmd>Telescope file_browser<CR>", mapdefaults)
+      keymap('n', cfg.map['file_browser'], "<cmd>Telescope file_browser path=%:p:h cwd_to_path=true<CR>", mapdefaults)
     end
   }
 end
