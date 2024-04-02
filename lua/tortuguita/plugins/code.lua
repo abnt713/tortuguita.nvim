@@ -106,7 +106,7 @@ end
 
 function code.linter(cfg)
   return {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     dependencies = {
       'williamboman/mason.nvim',
       'jay-babu/mason-null-ls.nvim'
