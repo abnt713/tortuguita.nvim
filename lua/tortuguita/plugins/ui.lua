@@ -12,17 +12,7 @@ function ui.colorscheme()
 end
 
 function ui.statusline()
-  return {
-    "nvim-lualine/lualine.nvim",
-    config = function()
-      require('lualine').setup({
-        theme = 'everblush'
-      })
-    end,
-    dependencies = {
-      'nvim-tree/nvim-web-devicons'
-    },
-  }
+  return require('tortuguita.plugins.galaxyline').statusline()
 end
 
 function ui.indent_guides()
