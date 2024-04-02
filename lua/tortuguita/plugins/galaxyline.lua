@@ -90,7 +90,11 @@ function galaxyline.filename()
   return {
     FileName = {
       provider = function()
-        return vim.fn.expand('%')
+        local value = vim.fn.expand('%:~:.')
+        if string.len(value) > 40 then
+          return '...' .. string.sub(value, -40)
+        end
+        return value
       end,
       condition = condition.buffer_not_empty,
     }
