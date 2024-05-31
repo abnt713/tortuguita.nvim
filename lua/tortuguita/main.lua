@@ -6,6 +6,7 @@ function main.main(cfg)
   editor.numbers_and_lines()
   editor.indentation()
   editor.map_cc_to_esc()
+  editor.map_filetree()
 
   local utils = require('tortuguita.utils')
   utils.map_file_reference(cfg.editor.map.file_reference)
@@ -17,7 +18,7 @@ function main.main(cfg)
   -- Setting up plugins
   local plugins = {
     require('tortuguita.plugins.ui').colorscheme(),
-    require('tortuguita.plugins.ui').statusline(),
+    --  require('tortuguita.plugins.ui').statusline(),
     require('tortuguita.plugins.ui').indent_guides(),
     require('tortuguita.plugins.ui').gitgutter(cfg.editor),
 
@@ -44,6 +45,7 @@ function main.main(cfg)
     require('tortuguita.plugins.tools').git(cfg.git),
     require('tortuguita.plugins.tools').colorizer(cfg.editor),
     require('tortuguita.plugins.tools').md_preview(cfg.md_preview),
+    require('tortuguita.plugins.tools').plantuml(),
   }
 
   lazy.setup(plugins, cfg.border_style)

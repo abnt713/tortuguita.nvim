@@ -37,4 +37,9 @@ function editor.map_cc_to_esc()
   vim.api.nvim_set_keymap('i', '<C-c>', '<ESC>', { noremap = true })
 end
 
+--- Map filetree to terminal.
+function editor.map_filetree()
+  vim.api.nvim_set_keymap('n', '<leader>ft', '<cmd>!tree .<CR>', { noremap = true })
+end
+
 return editor
