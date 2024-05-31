@@ -43,6 +43,21 @@ function debug.dap(cfg)
   }
 end
 
+local function get_arguments()
+  return coroutine.create(function(dap_run_co)
+    local testname = require('tortuguita.utils.golangts.tree').get_closest_test()
+    print('Running test', testname)
+    local args = { "-test.run", "^" .. testname .. "$" }
+    coroutine.resume(dap_run_co, args)
+  end)
+end
+
+local function fetch_closest_test_arg()
+  local testname = require('tortuguita.utils.golangts.tree').get_closest_test()
+  print('Testing', testname)
+  return { "-test.run", "^" .. testname .. "$" }
+end
+
 function debug.go_adapter()
   local gotags_flag = '-tags=' .. vim.g.gotags
   return {
@@ -81,6 +96,15 @@ function debug.go_adapter()
       name = "Debug test (go.mod)",
       request = "launch",
       mode = "test",
+      program = "./${relativeFileDirname}",
+      buildFlags = gotags_flag,
+    },
+    {
+      type = 'delve',
+      name = "Debug closest test (go.mod)",
+      request = "launch",
+      mode = "test",
+      args = get_arguments,
       program = "./${relativeFileDirname}",
       buildFlags = gotags_flag,
     },
