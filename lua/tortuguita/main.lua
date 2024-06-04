@@ -36,6 +36,7 @@ function main.main(cfg)
 
     require('tortuguita.plugins.code').autocomplete(),
     require('tortuguita.plugins.code').treesitter(),
+    require('tortuguita.plugins.code').treesitter_context(),
     require('tortuguita.plugins.code').linter(cfg.linter),
 
     require('tortuguita.plugins.lsp').engine(cfg.lsp),

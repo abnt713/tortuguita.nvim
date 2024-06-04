@@ -155,4 +155,16 @@ function code.linter(cfg)
   }
 end
 
+function code.treesitter_context()
+  return {
+    'nvim-treesitter/nvim-treesitter-context',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter'
+    },
+    config = function()
+      require('treesitter-context').setup({})
+    end
+  }
+end
+
 return code
