@@ -7,6 +7,7 @@ function main.main(cfg)
   editor.indentation()
   editor.map_cc_to_esc()
   editor.map_filetree()
+  editor.netrw()
 
   local utils = require('tortuguita.utils')
   utils.map_file_reference(cfg.editor.map.file_reference)
@@ -27,6 +28,7 @@ function main.main(cfg)
     require('tortuguita.plugins.editor').hardmode(),
     require('tortuguita.plugins.editor').project_config(),
     require('tortuguita.plugins.editor').assets_manager(cfg.border_style),
+    require('tortuguita.plugins.editor').netrw(),
     require('tortuguita.plugins.fuzzy').base(cfg.fuzzy),
     require('tortuguita.plugins.fuzzy').file_explorer(cfg.fuzzy),
 
