@@ -1,5 +1,14 @@
 local main = {}
 
+local function require_if_exists(modname)
+  local status, mod = pcall(require, modname)
+  if not status then
+    return nil
+  end
+
+  return mod
+end
+
 function main.main(cfg)
   local editor = require('tortuguita.editor')
   editor.default_opts()
@@ -52,6 +61,11 @@ function main.main(cfg)
   }
 
   lazy.setup(plugins, cfg.border_style)
+
+  local settings = require_if_exists('tortuguita.local')
+  if settings ~= nil then
+    settings()
+  end
 end
 
 return main
