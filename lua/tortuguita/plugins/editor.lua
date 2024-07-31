@@ -49,4 +49,19 @@ function editor.netrw()
   }
 end
 
+function editor.pencil()
+  return {
+    "preservim/vim-pencil",
+    init = function()
+      vim.g["pencil#wrapModeDefault"] = "soft"
+    end,
+  }
+end
+
+function editor.zen()
+  return {
+    'folke/zen-mode.nvim',
+  }
+end
+
 return editor

@@ -38,6 +38,9 @@ function main.main(cfg)
     require('tortuguita.plugins.editor').project_config(),
     require('tortuguita.plugins.editor').assets_manager(cfg.border_style),
     require('tortuguita.plugins.editor').netrw(),
+    require('tortuguita.plugins.editor').pencil(),
+    require('tortuguita.plugins.editor').zen(),
+
     require('tortuguita.plugins.fuzzy').base(cfg.fuzzy),
     require('tortuguita.plugins.fuzzy').file_explorer(cfg.fuzzy),
 
@@ -61,6 +64,8 @@ function main.main(cfg)
   }
 
   lazy.setup(plugins, cfg.border_style)
+
+  editor.setup_write_mode()
 
   local settings = require_if_exists('tortuguita.local')
   if settings ~= nil then

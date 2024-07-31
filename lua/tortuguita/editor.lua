@@ -18,7 +18,7 @@ function editor.numbers_and_lines()
     desc = 'Set text wrapping for text files',
     pattern = { '*.md', '*.txt' },
     callback = function()
-      vim.cmd 'setlocal textwidth=80'
+      vim.cmd 'setlocal colorcolumn=0'
     end
   })
 end
@@ -47,6 +47,20 @@ function editor.netrw()
   -- vim.g.netrw_keepdir = 0
   -- vim.g.netrw_liststyle = 3
   vim.g.netrw_bufsettings = 'noma nomod nu rnu nowrap ro nobl'
+end
+
+function editor.setup_write_mode()
+  vim.api.nvim_create_user_command('WriterMode', function()
+    vim.cmd 'ZenMode | PencilSoft | set spell spelllang=pt_br'
+
+    vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+      desc = 'Set text wrapping for text files',
+      pattern = { '*.md', '*.txt' },
+      callback = function()
+        vim.cmd 'PencilSoft'
+      end
+    })
+  end, {})
 end
 
 return editor
